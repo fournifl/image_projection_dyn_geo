@@ -63,9 +63,15 @@ def main(
     # create output directory
     conf.outdir.mkdir(parents=True, exist_ok=True)
 
-    # project images
-    print('project images')
-    project.main(conf)
+    try:
+        # project images
+        print('project images')
+        project.main(conf)
+
+    except Exception as e:
+        typer.secho(f"An error occurred: {e}", fg=typer.colors.RED)
+        typer.echo(traceback.format_exc())
+        sys.exit(1)
 
 
 if __name__ == "__main__":

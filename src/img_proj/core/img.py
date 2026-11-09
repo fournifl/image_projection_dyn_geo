@@ -21,10 +21,10 @@ def ls_period(dir, start, end, extension='*.jp*g'):
     ls = sorted(dir.glob(extension))
     t_im = [get_date(f) for f in ls]
     inds = [i for i, dt in enumerate(t_im) if start <= dt <= end]
-    return np.array(ls)[inds].tolist()
+    return np.array(t_im)[inds], np.array(ls)[inds]
 
 
-def read_jpeg(fname, pixel_format=tjpeg.TJPF_RGB) -> np.ndarray:
+def read_jpeg(fname, pixel_format=tjpeg.TJPF_BGR) -> np.ndarray:
     fname = fname
     with fname.open("rb") as fp:
         buffer = fp.read()

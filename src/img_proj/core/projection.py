@@ -1,5 +1,6 @@
 from pathlib import Path
 from datetime import datetime
+import numpy as np
 
 from georef.operators import ProjectionGrid, Projector, Georef
 
@@ -14,7 +15,7 @@ def run(dir_imgs: Path, georef_type: 'str', start:datetime, end:datetime, f_cam_
 
 
     # list images to be projected
-    ls = img.ls_period(dir_imgs, start, end)
+    t_im, ls = img.ls_period(dir_imgs, start, end)
 
     # projection grid
     projection_grid = ProjectionGrid(pgrid.xmin, pgrid.xmax, pgrid.res, pgrid.ymin, pgrid.ymax, pgrid.res, pgrid.z)
@@ -22,13 +23,17 @@ def run(dir_imgs: Path, georef_type: 'str', start:datetime, end:datetime, f_cam_
     # read static or dynamic camera parameters
     if georef_type == 'static':
         gp = Georef.from_param_file(f_cam_params_static)
+        # projector static
+        projector_static = Projector(gp, projection_grid)
     else:
         t_cparams, georef_params, [undistort_map_x, undistort_map_y] = read_cam_params_dynamic(
             dir_cam_params_dynamic, start, end)
 
-    # projector static
-    projector = Projector(gp, projection_grid)
-
+    # keep concomitant dates between images and camera parameters
+    if georef_type == 'dynamic':
+        common, idx_tim, idx_cparams = np.intersect1d(t_im, t_cparams, return_indices=True)
+        ls = ls[idx_tim]
+        georef_params = np.array(georef_params)[idx_cparams]
 
     # project images
     for i, f in enumerate(ls):
@@ -37,28 +42,21 @@ def run(dir_imgs: Path, georef_type: 'str', start:datetime, end:datetime, f_cam_
         im = img.read_jpeg(f)
 
         # projector
-        if georef_type == 'dynamic':
-            # gp = georef_params[i]
-            # gp._undistort_map_x = undistort_map[0]
-            # gp._undistort_map_y = undistort_map[1]
-            # projector = Projector(gp, projection_grid)
-            print('')
+        if georef_type == 'static':
+            projector = projector_static
+
+        elif georef_type == 'dynamic':
+            gp = georef_params[i]
+            gp._undistort_map_x = undistort_map_x
+            gp._undistort_map_y = undistort_map_y
+            projector = Projector(gp, projection_grid)
 
         # project image
-        # im_proj = projector.project_image(im)
-        # if return_imgs_proj:
-        #     imgs_proj.append(im_proj.img_proj)
+        projector.project_image(im)
 
         # save to file
         f_png = odir / ('P_' + f.stem + save_format)
-        # projector.to_png(f_png)
-
-
-
-
-
-
-
+        projector.to_png(f_png)
 
     return
 

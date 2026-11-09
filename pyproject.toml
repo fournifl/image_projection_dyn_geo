@@ -6,7 +6,19 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "georef",
+    "pydantic>=2.14.3",
+    "pyturbojpeg==1.8.3",
+    "pyyaml>=6.0.3",
+    "typer>=0.28.0",
 ]
+
+[build-system]
+requires = ["uv_build>=0.8.22,<0.9.0"]
+build-backend = "uv_build"
 
 [tool.uv.sources]
 georef = { git = "ssh://git@github.com/wavesnsee/georef", rev = "main" }
+
+[project.scripts]
+img_proj = "img_proj.cli.app:app"
+

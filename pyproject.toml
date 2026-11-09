@@ -1,0 +1,12 @@
+[project]
+name = "img_proj"
+version = "0.1.0"
+description = "projection of images using the wns' georef library. Camera parameters can either be static or dynamic (extrinsic parameters)."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "georef",
+]
+
+[tool.uv.sources]
+georef = { git = "ssh://git@github.com/wavesnsee/georef", rev = "main" }

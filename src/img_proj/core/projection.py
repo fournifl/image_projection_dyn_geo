@@ -29,6 +29,9 @@ def run(dir_imgs: Path,
     # projection grid
     projection_grid = ProjectionGrid(pgrid.xmin, pgrid.xmax, pgrid.res, pgrid.ymin, pgrid.ymax, pgrid.res, pgrid.z)
 
+    # save projection grid
+    np.savez_compressed(odir / 'coords_projected_grid.npz', grid_x=projection_grid.xx, grid_y=projection_grid.yy)
+
     # read static or dynamic camera parameters
     if georef_type == 'static':
         gp = Georef.from_param_file(f_cam_params_static)

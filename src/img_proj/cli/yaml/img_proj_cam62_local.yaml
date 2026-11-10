@@ -2,7 +2,10 @@ cam_id: 60
 dir_imgs: '/home/florent/Projects/Caparica/caparica_3/images/raw/' # input directory of images to be projected
 georef_type: 'dynamic' # either 'static' or 'dynamic'
 f_cam_params_static: '/home/florent/Projects/Caparica/caparica_3/info/cam_params_caparica3.json'
-dir_cam_params_dynamic: '/home/florent/tmp/check_production/caparica/c3/dyn_geo/3_cam_params/raw/' # input directory of dynamic camera parameters
+cam_params_dynamic:
+  dir: '/home/florent/tmp/check_production/caparica/c3/dyn_geo/3_cam_params/raw/' # input directory of dynamic camera parameters
+  use_despiking: false # use despiking results from dyn_geo projects, if used camera parameters are raw (not smooth)
+  f_despiking: ''
 start: 2026-05-16 00:00
 end: 2026-05-16 21:00
 pgrid:

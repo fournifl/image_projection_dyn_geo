@@ -12,7 +12,12 @@ from img_proj.cli import project
 app = typer.Typer(no_args_is_help=True)
 
 
-class ProjectionGrid(BaseModel):
+class CamParamsDynamic(BaseModel):
+    dir: Path
+    use_despiking: bool
+    f_despiking: Path
+
+class ProjGrid(BaseModel):
     xmin: int
     xmax: int
     ymin: int
@@ -25,10 +30,10 @@ class AppConfig(BaseModel):
     dir_imgs: Path
     georef_type: Literal["static", "dynamic"]
     f_cam_params_static: Path
-    dir_cam_params_dynamic: Path
+    cam_params_dynamic: CamParamsDynamic
     start: datetime
     end: datetime
-    pgrid: ProjectionGrid
+    pgrid: ProjGrid
     save_format: str
     outdir: Path
 
@@ -57,7 +62,7 @@ def main(
     if not conf.dir_imgs.is_dir():
         raise typer.Exit("Directory of images to be projected does not exist")
     if conf.georef_type == 'dynamic':
-        if not conf.dir_cam_params_dynamic.is_dir():
+        if not conf.cam_params_dynamic.dir.is_dir():
             raise typer.Exit("Directory of dynamic camera parameters does not exist")
 
     # create output directory

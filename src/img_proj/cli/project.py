@@ -7,7 +7,9 @@ def main(conf):
                    conf.start,
                    conf.end,
                    conf.f_cam_params_static,
-                   conf.dir_cam_params_dynamic,
+                   conf.cam_params_dynamic.dir,
+                   conf.cam_params_dynamic.use_despiking,
+                   conf.cam_params_dynamic.f_despiking,
                    conf.pgrid,
                    conf.save_format,
                    conf.outdir

@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 from georef.operators import Georef
 
@@ -6,7 +7,7 @@ from img_proj.core.img import get_date
 
 
 
-def read_cam_params_dynamic(dir_cparams, start=None, end=None):
+def read_cam_params_dynamic(dir_cparams, use_despiking, f_despiking, start=None, end=None):
 
     # initialize georef_params and date
     georef_params = []
@@ -39,9 +40,25 @@ def read_cam_params_dynamic(dir_cparams, start=None, end=None):
         gp._undistort_map_x = None
         gp._undistort_map_y = None
 
+    # use despiking of camera parameters if used camera parameters are raw (not smooth)
+    if use_despiking:
+        t_cparams, georef_params = apply_despiking(f_despiking, t_cparams, georef_params)
+
+
     # get distorsion maps only once as it does not change
     gp = Georef.from_param_file(f)
     undistort_map_x = gp._undistort_map_x
     undistort_map_y = gp._undistort_map_y
 
+
     return t_cparams, georef_params, [undistort_map_x, undistort_map_y]
+
+
+def apply_despiking(f_despiking, t_cparams, georef_params):
+    df = pd.read_csv(f_despiking, parse_dates=["raw_cparam_date"])
+    df = df[df["raw_cparam_date"].isin(t_cparams)]
+    valid = df['valid']
+    t_cparams = t_cparams[valid]
+    georef_params = np.array(georef_params)[valid]
+
+    return t_cparams, georef_params

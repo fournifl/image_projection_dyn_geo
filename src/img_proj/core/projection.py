@@ -7,8 +7,17 @@ from georef.operators import ProjectionGrid, Projector, Georef
 from img_proj.core import img
 from img_proj.core.cam_params import read_cam_params_dynamic
 
-def run(dir_imgs: Path, georef_type: 'str', start:datetime, end:datetime, f_cam_params_static: Path,
-        dir_cam_params_dynamic: Path, pgrid: ProjectionGrid, save_format: str, odir: Path):
+def run(dir_imgs: Path,
+        georef_type: 'str',
+        start:datetime,
+        end:datetime,
+        f_cam_params_static: Path,
+        dir_cam_params_dynamic: Path,
+        use_despiking: bool,
+        f_despiking: Path,
+        pgrid: ProjectionGrid,
+        save_format: str,
+        odir: Path):
     '''
     Project images in 'dir_imgs' using the projection grid 'pgrid' and either static or dynamic georef.
     '''
@@ -27,7 +36,7 @@ def run(dir_imgs: Path, georef_type: 'str', start:datetime, end:datetime, f_cam_
         projector_static = Projector(gp, projection_grid)
     else:
         t_cparams, georef_params, [undistort_map_x, undistort_map_y] = read_cam_params_dynamic(
-            dir_cam_params_dynamic, start, end)
+            dir_cam_params_dynamic, use_despiking, f_despiking, start, end)
 
     # keep concomitant dates between images and camera parameters
     if georef_type == 'dynamic':

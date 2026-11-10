@@ -1,0 +1,19 @@
+cam_id: 62
+dir_imgs: '/data/workspaces/florent/Projects/Caparica/caparica_3/images/raw/' # input directory of images to be projected
+georef_type: 'dynamic' # either 'static' or 'dynamic'
+f_cam_params_static: '/data/workspaces/florent/Projects/Caparica/caparica_3/info/cam_params_caparica3.json'
+cam_params_dynamic:
+  dir: '/data/workspaces/florent/Projects/Caparica/caparica_3/dyn_geo/flann/3_cam_params/raw/' # input directory of dynamic camera parameters
+  use_despiking: true # use despiking results from dyn_geo projects, if used camera parameters are raw (not smooth)
+  f_despiking: '/home/florent/workspaces/florent/Projects/Caparica/caparica_3/dyn_geo/flann/4_cam_mvts/despiking.csv'
+start: 2025-12-18 00:00
+end: 2026-11-04 20:00
+pgrid:
+  xmin: -500
+  xmax: 600
+  ymin: 0
+  ymax: 800
+  res: 0.5
+  z: 2.0
+save_format: '.png'
+outdir: '/data/workspaces/florent/Projects/Caparica/caparica_3/images/projected_sandbars/' # output directory for projected images

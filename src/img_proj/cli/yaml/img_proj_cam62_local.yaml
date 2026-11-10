@@ -1,0 +1,16 @@
+cam_id: 60
+dir_imgs: '/home/florent/Projects/Caparica/caparica_3/images/raw/' # input directory of images to be projected
+georef_type: 'dynamic' # either 'static' or 'dynamic'
+f_cam_params_static: '/home/florent/Projects/Caparica/caparica_3/info/cam_params_caparica3.json'
+dir_cam_params_dynamic: '/home/florent/tmp/check_production/caparica/c3/dyn_geo/3_cam_params/raw/' # input directory of dynamic camera parameters
+start: 2026-05-16 00:00
+end: 2026-05-16 21:00
+pgrid:
+  xmin: 67
+  xmax: 600
+  ymin: -10
+  ymax: 185
+  res: 0.5
+  z: 8.6
+save_format: '.png'
+outdir: '/home/florent/tmp/check_production/caparica/c3/test_proj_dynamic/' # output directory for projected images

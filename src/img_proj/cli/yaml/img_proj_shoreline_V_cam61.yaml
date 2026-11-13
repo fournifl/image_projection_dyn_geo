@@ -1,5 +1,6 @@
 cam_id: 61
 dir_imgs: '/data/workspaces/florent/Projects/Caparica/caparica_2/images/raw_variance/' # input directory of images to be projected
+rgb2gray: true
 georef_type: 'dynamic' # either 'static' or 'dynamic'
 f_cam_params_static: '/data/workspaces/florent/Projects/Caparica/caparica_2/info/cam_params_caparica2.json'
 cam_params_dynamic:

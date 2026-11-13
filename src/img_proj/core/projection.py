@@ -3,6 +3,8 @@ from datetime import datetime
 import numpy as np
 
 from georef.operators import ProjectionGrid, Projector, Georef
+import turbojpeg as tjpeg
+jpeg = tjpeg.TurboJPEG()
 
 from img_proj.core import img
 from img_proj.core.cam_params import read_cam_params_dynamic
@@ -17,6 +19,7 @@ def run(dir_imgs: Path,
         f_despiking: Path,
         pgrid: ProjectionGrid,
         save_format: str,
+        rgb2gray: bool,
         odir: Path):
     '''
     Project images in 'dir_imgs' using the projection grid 'pgrid' and either static or dynamic georef.
@@ -47,11 +50,18 @@ def run(dir_imgs: Path,
         ls = ls[idx_tim]
         georef_params = np.array(georef_params)[idx_cparams]
 
+    # turbojpeg pixel format
+    if rgb2gray:
+        pixel_format = tjpeg.TJPF_GRAY
+    else:
+        pixel_format = tjpeg.TJPF_BGR
+
     # project images
+
     for i, f in enumerate(ls):
 
         # read im
-        im = img.read_jpeg(f)
+        im = img.read_jpeg(f, pixel_format=pixel_format)
 
         # projector
         if georef_type == 'static':

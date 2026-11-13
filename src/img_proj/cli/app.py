@@ -28,6 +28,7 @@ class ProjGrid(BaseModel):
 class AppConfig(BaseModel):
     cam_id: int
     dir_imgs: Path
+    rgb2gray: bool
     georef_type: Literal["static", "dynamic"]
     f_cam_params_static: Path
     cam_params_dynamic: CamParamsDynamic

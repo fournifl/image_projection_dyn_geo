@@ -12,5 +12,6 @@ def main(conf):
                    conf.cam_params_dynamic.f_despiking,
                    conf.pgrid,
                    conf.save_format,
+                   conf.rgb2gray,
                    conf.outdir
                   )
